@@ -284,12 +284,14 @@ public class MTLParser extends ParserPlugin{
 		lexer.addErrorListener(le2);
 		CommonTokenStream tokenstream = new CommonTokenStream(lexer);
 		RiTHMMTLgrammarListener rllistener = new RiTHMMTLgrammarListener(mode, Spec.getTextDescription());
+		RiTHMMTLVisitor rVisitor = new RiTHMMTLVisitor(null, null);
 		parser = new MTLParserParser(tokenstream);
 		ParseTreeWalker ptwalker = new ParseTreeWalker();
 		parser.removeErrorListeners();
 		MTLErrorListener le1 = new MTLErrorListener();
 		parser.addErrorListener(le1);
 		ParseTree ptree = parser.mtl();
+		rVisitor.visit(ptree);
 		ptwalker.walk(rllistener, ptree);
 		boolean retval = le1.validation_result && le2.validation_result;
 		ptwalker = null;

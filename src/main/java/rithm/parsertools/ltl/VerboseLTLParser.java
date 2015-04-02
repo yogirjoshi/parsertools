@@ -280,7 +280,7 @@ public class VerboseLTLParser extends ParserPlugin{
 	{
 		lexer = new verboseltlgrammarLexer(new ANTLRInputStream(Spec.getTextDescription()));
 		lexer.removeErrorListeners();
-		ltlErrorListener le2 = new ltlErrorListener();
+		verboseltlErrorListener le2 = new verboseltlErrorListener();
 		lexer.addErrorListener(le2);
 		CommonTokenStream tokenstream = new CommonTokenStream(lexer);
 		RiTHMltlgrammarListener rllistener = new RiTHMltlgrammarListener(mode, Spec.getTextDescription());
