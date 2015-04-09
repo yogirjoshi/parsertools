@@ -44,7 +44,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 	}
 	public void setPredicateEvaluator(PredicateEvaluator pe)
 	{
-		
+		this.pe = pe;
 	}
 	@Override
 	public String visitUnaryNonTemporal(UnaryNonTemporalContext ctx) {
@@ -103,17 +103,20 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 			ArrayList<RiTHMTruthValue> unaryNonTemporalEval = new ArrayList<RiTHMTruthValue>();
 			ArrayList<RiTHMTruthValue> operandEval = evalStatus.get(previousName);
 			for(int i = 0; i < operandEval.size();i++)
-			{
-//				unaryNonTemporalEval.add(e)
-			}
+				unaryNonTemporalEval.add(evalNot(operandEval.get(i)));
 				
 		}
 		
 		return null;
 	}
-	protected final void evalNot(RiTHMTruthValue tval)
+	protected final RiTHMTruthValue evalNot(RiTHMTruthValue tval)
 	{
-		tva
+		if(tval.getTruthValueDescription().equals("?"))
+			return new DefaultRiTHMTruthValue("?");
+		if(Boolean.getBoolean(tval.getTruthValueDescription()))
+			return new DefaultRiTHMTruthValue("false");
+		else
+			return new DefaultRiTHMTruthValue("true");
 	}
 	@Override
 	public String visitPred(PredContext ctx) {
