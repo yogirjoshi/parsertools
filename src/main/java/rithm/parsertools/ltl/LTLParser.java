@@ -374,5 +374,11 @@ public class LTLParser extends ParserPlugin{
 		// TODO Auto-generated method stub
 		return spec.getTextDescription();
 	}
+
+	@Override
+	public ParseTree getTreeforSpec(RiTHMSpecification spec) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

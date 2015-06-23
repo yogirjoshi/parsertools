@@ -21,8 +21,7 @@ public class MTLParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitUnaryNonTemporal(@NotNull MTLParserParser.UnaryNonTemporalContext ctx) {
-		return visitChildren(ctx); }
+	@Override public T visitUnaryNonTemporal(@NotNull MTLParserParser.UnaryNonTemporalContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -40,15 +39,13 @@ public class MTLParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 */
 	@Override public T visitMtl(@NotNull MTLParserParser.MtlContext ctx) { return visitChildren(ctx); }
 
-	/**ptwalker
+	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPred(@NotNull MTLParserParser.PredContext ctx) { return 
-
-			visitChildren(ctx); }
+	@Override public T visitPred(@NotNull MTLParserParser.PredContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -56,8 +53,7 @@ public class MTLParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBinaryTemporal(@NotNull MTLParserParser.BinaryTemporalContext ctx) { 
-		return visitChildren(ctx); }
+	@Override public T visitBinaryTemporal(@NotNull MTLParserParser.BinaryTemporalContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}
@@ -73,8 +69,7 @@ public class MTLParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIntervalNode(@NotNull MTLParserParser.IntervalNodeContext ctx) {
-		return visitChildren(ctx); }
+	@Override public T visitIntervalNode(@NotNull MTLParserParser.IntervalNodeContext ctx) { return visitChildren(ctx); }
 
 	/**
 	 * {@inheritDoc}

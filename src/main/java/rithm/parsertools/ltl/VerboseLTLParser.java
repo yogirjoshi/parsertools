@@ -381,5 +381,11 @@ public class VerboseLTLParser extends ParserPlugin{
 		rewrittenSpec = rewrittenSpec.replaceAll(" NOT ", "!");
 		return rewrittenSpec;
 	}
+
+	@Override
+	public ParseTree getTreeforSpec(RiTHMSpecification spec) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

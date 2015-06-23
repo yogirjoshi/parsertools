@@ -93,33 +93,33 @@ public class MTLParser extends ParserPlugin{
      * The language used by the parser
      * Currently Unused
      */
-	private String SpecLang;
+	private String specLang;
 	/**
      * Collection of Predicates for the specifications parsed by the parser
      * @see #getPredicates()
      */
 	private HashMap<String, ArrayList<String>> predsForSpec;
-	private ArrayList<RiTHMPredicate> PredicateList;
+	private ArrayList<RiTHMPredicate> predicateList;
 	/**
      * A Map used to maintain the references between specifications and predicates
      * @see #getPredicates()
      */
-	private HashMap<RiTHMPredicate, Integer> PredCount;
+	private HashMap<RiTHMPredicate, Integer> predCount;
 	
 	/**
      * A Map used to maintain the references between specifications and predicates
      * @see #getSpecs()
      */
-	private RiTHMSpecificationCollection SpecList;
+	private RiTHMSpecificationCollection specList;
 	
 	/**
      * A Map used to maitain the references between specifications and predicates
      * @see #validateSpecs()
      */
-	private ArrayList<Boolean> SpecValidationList;
+	private ArrayList<Boolean> specValidationList;
 	private MTLParserLexer lexer;
 	private MTLParserParser parser;
-	private HashMap<RiTHMSpecification, String> ErrorMessages;
+	private HashMap<RiTHMSpecification, String> errorMessages;
 	
 	public enum Mode
 	{
@@ -128,12 +128,12 @@ public class MTLParser extends ParserPlugin{
 	}
 	public MTLParser(String Lang)
 	{
-		SpecLang = Lang;
-		SpecList  = new DefaultRiTHMSpecificationCollection();
-		SpecValidationList = new ArrayList<Boolean>();
-		PredicateList = new ArrayList<RiTHMPredicate>();
-		PredCount = new HashMap<RiTHMPredicate, Integer>();
-		ErrorMessages = new HashMap<RiTHMSpecification, String>();
+		specLang = Lang;
+		specList  = new DefaultRiTHMSpecificationCollection();
+		specValidationList = new ArrayList<Boolean>();
+		predicateList = new ArrayList<RiTHMPredicate>();
+		predCount = new HashMap<RiTHMPredicate, Integer>();
+		errorMessages = new HashMap<RiTHMSpecification, String>();
 		predsForSpec = new HashMap<String, ArrayList<String>>();
 	}
 	class RiTHMMTLgrammarListener extends MTLParserBaseListener
@@ -154,17 +154,17 @@ public class MTLParser extends ParserPlugin{
 			switch (mode) {
 			case 1:
 				RiTHMPredicate rp = new DefaultRiTHMPredicate(ctx.PREDNAME().toString());
-				if(!PredicateList.contains(rp))
+				if(!predicateList.contains(rp))
 				{
-					PredicateList.add(rp);
+					predicateList.add(rp);
 				}
-				if(PredCount.containsKey(rp))
+				if(predCount.containsKey(rp))
 				{
-					PredCount.put(rp, PredCount.get(rp)+1);
+					predCount.put(rp, predCount.get(rp)+1);
 				}
 				else
 				{
-					PredCount.put(rp, 1);
+					predCount.put(rp, 1);
 				}
 				if(!predsForSpec.containsKey(spec))
 					predsForSpec.put(spec, new ArrayList<String>());
@@ -173,20 +173,24 @@ public class MTLParser extends ParserPlugin{
 				break;
 			case 2:
 				RiTHMPredicate rp1 = new DefaultRiTHMPredicate(ctx.PREDNAME().toString());
-				if(PredCount.get(rp1) <= 1)
+				if(predCount.get(rp1) <= 1)
 				{
-					PredCount.remove(rp1);
-					PredicateList.remove(rp1);
+					predCount.remove(rp1);
+					predicateList.remove(rp1);
 //					System.out.println("deleted from PredicateList" + ctx.PREDNAME().toString());
-					for (RiTHMPredicate each_pred: PredicateList)
+					for (RiTHMPredicate each_pred: predicateList)
 						System.out.println(each_pred.getTextDescription());
 				}
 				else
 				{
-					PredCount.put(rp1, PredCount.get(rp1)-1);
+					predCount.put(rp1, predCount.get(rp1)-1);
 				}
 				if(predsForSpec.get(spec).contains(ctx.PREDNAME().toString()))
+				{
 					predsForSpec.get(spec).remove(ctx.PREDNAME().toString());
+					if(predsForSpec.get(spec).size() <= 0)
+						predsForSpec.remove(spec);
+				}
 				break;
 			default:
 				break;
@@ -204,8 +208,8 @@ public class MTLParser extends ParserPlugin{
 	@Override
 	public boolean removeSpec(RiTHMSpecification Spec) {
 		// TODO Auto-generated method stub
-		validate_spec(Spec,2);
-		SpecList.remove(Spec);
+		validatesSpec(Spec,2);
+		specList.remove(Spec);
 		return false;
 	}
 	@Override
@@ -226,7 +230,7 @@ public class MTLParser extends ParserPlugin{
 			while((line = br.readLine())!= null)
 			{
 				RiTHMSpecification r = new DefaultRiTHMSpecification(line);
-				SpecList.add(r);
+				specList.add(r);
 			}
 			br.close();
 		}
@@ -242,7 +246,7 @@ public class MTLParser extends ParserPlugin{
 	public boolean loadSpecs(RiTHMSpecificationCollection Specs) {
 		// TODO Auto-generated method stub
 		for(RiTHMSpecification spec : Specs )
-			this.SpecList.add(spec);
+			this.specList.add(spec);
 		validateSpecs();
 		return false;
 	}
@@ -251,32 +255,41 @@ public class MTLParser extends ParserPlugin{
 	public ArrayList<Boolean> validateSpecs() {
 		// TODO Auto-generated method stub
 
-		for(int i = 0; i < SpecList.length();i++)
+		for(int i = 0; i < specList.length();i++)
 		{	
-			if(!validate_spec(SpecList.at(i),1))
-				SpecList.remove(i);
+			if(!validatesSpec(specList.at(i),1))
+				specList.remove(i);
 			
 		}
-		for(int i = 0; i < SpecList.length();i++)
-			SpecValidationList.add(true);
+		for(int i = 0; i < specList.length();i++)
+			specValidationList.add(true);
 		
-		return SpecValidationList;
+		return specValidationList;
 	}
 
 	@Override
 	public boolean appendSpec(RiTHMSpecification Spec) {
 		// TODO Auto-generated method stub
 
-		if(validate_spec(Spec,1))
+		if(validatesSpec(Spec,1))
 		{
-			SpecList.add(Spec);
-			SpecValidationList.add(true);
+			specList.add(Spec);
+			specValidationList.add(true);
 		}
 		else
 			return false;
 		return true;
 	}
-	private boolean validate_spec(RiTHMSpecification Spec, int mode)
+	
+	public ParseTree getTreeforSpec(RiTHMSpecification spec)
+	{
+		lexer = new MTLParserLexer(new ANTLRInputStream(spec.getTextDescription()));
+		lexer.removeErrorListeners();
+		CommonTokenStream tokenstream = new CommonTokenStream(lexer);
+		parser = new MTLParserParser(tokenstream);
+		return parser.mtl();
+	}
+	private boolean validatesSpec(RiTHMSpecification Spec, int mode)
 	{
 		lexer = new MTLParserLexer(new ANTLRInputStream(Spec.getTextDescription()));
 		lexer.removeErrorListeners();
@@ -284,22 +297,22 @@ public class MTLParser extends ParserPlugin{
 		lexer.addErrorListener(le2);
 		CommonTokenStream tokenstream = new CommonTokenStream(lexer);
 		RiTHMMTLgrammarListener rllistener = new RiTHMMTLgrammarListener(mode, Spec.getTextDescription());
-		RiTHMMTLVisitor rVisitor = new RiTHMMTLVisitor(null, null);
+//		RiTHMMTLVisitor rVisitor = new RiTHMMTLVisitor(null, null);
 		parser = new MTLParserParser(tokenstream);
 		ParseTreeWalker ptwalker = new ParseTreeWalker();
 		parser.removeErrorListeners();
 		MTLErrorListener le1 = new MTLErrorListener();
 		parser.addErrorListener(le1);
 		ParseTree ptree = parser.mtl();
-		rVisitor.visit(ptree);
+//		rVisitor.visit(ptree);
 		ptwalker.walk(rllistener, ptree);
 		boolean retval = le1.validation_result && le2.validation_result;
 		ptwalker = null;
 		
 		if(retval)
-			ErrorMessages.put(Spec, "No error, Valid MTL formula\n");
+			errorMessages.put(Spec, "No error, Valid MTL formula\n");
 		else
-			ErrorMessages.put(Spec, le1.error_message + le2.error_message);
+			errorMessages.put(Spec, le1.error_message + le2.error_message);
 		
 		lexer = null;
 		parser = null;
@@ -312,10 +325,8 @@ public class MTLParser extends ParserPlugin{
 	@Override
 	public ArrayList<Boolean> validationResults() {
 		// TODO Auto-generated method stub
-		return SpecValidationList;
+		return specValidationList;
 	}
-
-
 
 	@Override
 	public boolean exportSpecs(RiTHMSpecificationCollection Specs) {
@@ -333,26 +344,26 @@ public class MTLParser extends ParserPlugin{
 	@Override
 	public RiTHMSpecificationCollection getSpecs()
 	{
-		return SpecList;
+		return specList;
 	}
 	@Override
 	public ArrayList<RiTHMPredicate> getPredicates()
 	{
-		return PredicateList;
+		return predicateList;
 	}
 	@Override
 	public HashMap<RiTHMSpecification, String> getErrorMessages() {
 		// TODO Auto-generated method stub
-		return ErrorMessages;
+		return errorMessages;
 	}
 	public void clearErrors()
 	{
-		ErrorMessages.clear();
+		errorMessages.clear();
 	}
 	public String getErrorforSpec(RiTHMSpecification Spec)
 	{
-		if(ErrorMessages.containsKey(Spec))
-			return ErrorMessages.get(Spec);
+		if(errorMessages.containsKey(Spec))
+			return errorMessages.get(Spec);
 		else
 			return "No Record Found";
 	}
@@ -360,9 +371,9 @@ public class MTLParser extends ParserPlugin{
 	@Override
 	public boolean removeAllSpecs() {
 		// TODO Auto-generated method stub
-		for(RiTHMSpecification each_spec: SpecList)
-			validate_spec(each_spec, 2);
-		SpecList.clear();
+		for(RiTHMSpecification each_spec: specList)
+			validatesSpec(each_spec, 2);
+		specList.clear();
 		return false;
 	}
 	public ArrayList<String> getPredsForSpec(String spec)
