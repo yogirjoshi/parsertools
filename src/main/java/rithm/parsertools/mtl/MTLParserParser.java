@@ -21,11 +21,11 @@ public class MTLParserParser extends Parser {
 		T__5=1, T__4=2, T__3=3, T__2=4, T__1=5, T__0=6, PREDNAME=7, ANDNODE=8, 
 		ORNODE=9, IFFNODE=10, IFNODE=11, UNTILNODE=12, SINCENODE=13, EVENTUALLYNODE=14, 
 		EVENTUALLYPASTNODE=15, GLOBALLYNODE=16, GLOBALLYPASTNODE=17, NOTNODE=18, 
-		NUM=19, COMMA=20, WS=21;
+		NUM=19, WS=20;
 	public static final String[] tokenNames = {
 		"<INVALID>", "'('", "')'", "'F[ALSE]'", "'{'", "'T[RUE]'", "'}'", "PREDNAME", 
 		"'&&'", "'||'", "'<->'", "'->'", "'U'", "'S'", "'<>'", "'<*>'", "'[]'", 
-		"'[*]'", "'!'", "NUM", "','", "WS"
+		"'[*]'", "'!'", "NUM", "WS"
 	};
 	public static final int
 		RULE_mtl = 0, RULE_pred = 1, RULE_unaryNonTemporal = 2, RULE_binaryNonTemporal = 3, 
@@ -512,11 +512,7 @@ public class MTLParserParser extends Parser {
 	}
 
 	public static class IntervalContext extends ParserRuleContext {
-		public List<TerminalNode> NUM() { return getTokens(MTLParserParser.NUM); }
-		public TerminalNode COMMA() { return getToken(MTLParserParser.COMMA, 0); }
-		public TerminalNode NUM(int i) {
-			return getToken(MTLParserParser.NUM, i);
-		}
+		public TerminalNode NUM() { return getToken(MTLParserParser.NUM, 0); }
 		public IntervalContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -543,8 +539,6 @@ public class MTLParserParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(64); match(NUM);
-			setState(65); match(COMMA);
-			setState(66); match(NUM);
 			}
 		}
 		catch (RecognitionException re) {
@@ -576,24 +570,24 @@ public class MTLParserParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\27G\4\2\t\2\4\3\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\26E\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\3\2\3\2\3\2\3\2\3\2"+
 		"\3\2\3\2\3\2\3\2\3\2\3\2\3\2\5\2\37\n\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3"+
 		"\2\3\2\3\2\7\2+\n\2\f\2\16\2.\13\2\3\3\3\3\3\4\3\4\3\5\3\5\3\6\3\6\3\6"+
-		"\3\6\5\6:\n\6\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\2\3\2\n"+
-		"\2\4\6\b\n\f\16\20\2\5\5\2\5\5\7\7\t\t\3\2\n\r\3\2\20\23E\2\36\3\2\2\2"+
-		"\4/\3\2\2\2\6\61\3\2\2\2\b\63\3\2\2\2\n9\3\2\2\2\f;\3\2\2\2\16>\3\2\2"+
-		"\2\20B\3\2\2\2\22\23\b\2\1\2\23\24\5\6\4\2\24\25\5\2\2\7\25\37\3\2\2\2"+
-		"\26\27\5\f\7\2\27\30\5\2\2\4\30\37\3\2\2\2\31\37\5\4\3\2\32\33\7\3\2\2"+
-		"\33\34\5\2\2\2\34\35\7\4\2\2\35\37\3\2\2\2\36\22\3\2\2\2\36\26\3\2\2\2"+
-		"\36\31\3\2\2\2\36\32\3\2\2\2\37,\3\2\2\2 !\f\6\2\2!\"\5\b\5\2\"#\5\2\2"+
-		"\7#+\3\2\2\2$%\f\5\2\2%&\5\n\6\2&\'\5\2\2\6\'+\3\2\2\2()\f\3\2\2)+\7\27"+
-		"\2\2* \3\2\2\2*$\3\2\2\2*(\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-\3\3"+
-		"\2\2\2.,\3\2\2\2/\60\t\2\2\2\60\5\3\2\2\2\61\62\7\24\2\2\62\7\3\2\2\2"+
-		"\63\64\t\3\2\2\64\t\3\2\2\2\65\66\7\16\2\2\66:\5\16\b\2\678\7\17\2\28"+
-		":\5\20\t\29\65\3\2\2\29\67\3\2\2\2:\13\3\2\2\2;<\t\4\2\2<=\5\16\b\2=\r"+
-		"\3\2\2\2>?\7\6\2\2?@\5\20\t\2@A\7\b\2\2A\17\3\2\2\2BC\7\25\2\2CD\7\26"+
-		"\2\2DE\7\25\2\2E\21\3\2\2\2\6\36*,9";
+		"\3\6\5\6:\n\6\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\t\3\t\3\t\2\3\2\n\2\4\6\b"+
+		"\n\f\16\20\2\5\5\2\5\5\7\7\t\t\3\2\n\r\3\2\20\23C\2\36\3\2\2\2\4/\3\2"+
+		"\2\2\6\61\3\2\2\2\b\63\3\2\2\2\n9\3\2\2\2\f;\3\2\2\2\16>\3\2\2\2\20B\3"+
+		"\2\2\2\22\23\b\2\1\2\23\24\5\6\4\2\24\25\5\2\2\7\25\37\3\2\2\2\26\27\5"+
+		"\f\7\2\27\30\5\2\2\4\30\37\3\2\2\2\31\37\5\4\3\2\32\33\7\3\2\2\33\34\5"+
+		"\2\2\2\34\35\7\4\2\2\35\37\3\2\2\2\36\22\3\2\2\2\36\26\3\2\2\2\36\31\3"+
+		"\2\2\2\36\32\3\2\2\2\37,\3\2\2\2 !\f\6\2\2!\"\5\b\5\2\"#\5\2\2\7#+\3\2"+
+		"\2\2$%\f\5\2\2%&\5\n\6\2&\'\5\2\2\6\'+\3\2\2\2()\f\3\2\2)+\7\26\2\2* "+
+		"\3\2\2\2*$\3\2\2\2*(\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-\3\3\2\2\2"+
+		".,\3\2\2\2/\60\t\2\2\2\60\5\3\2\2\2\61\62\7\24\2\2\62\7\3\2\2\2\63\64"+
+		"\t\3\2\2\64\t\3\2\2\2\65\66\7\16\2\2\66:\5\16\b\2\678\7\17\2\28:\5\20"+
+		"\t\29\65\3\2\2\29\67\3\2\2\2:\13\3\2\2\2;<\t\4\2\2<=\5\16\b\2=\r\3\2\2"+
+		"\2>?\7\6\2\2?@\5\20\t\2@A\7\b\2\2A\17\3\2\2\2BC\7\25\2\2C\21\3\2\2\2\6"+
+		"\36*,9";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

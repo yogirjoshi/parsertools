@@ -1,4 +1,3 @@
-COMMA=20
 EVENTUALLYPASTNODE=15
 UNTILNODE=12
 T__5=1
@@ -18,9 +17,8 @@ T__2=4
 T__1=5
 T__0=6
 EVENTUALLYNODE=14
-WS=21
+WS=20
 '<->'=10
-','=20
 ')'=2
 '('=1
 '<>'=14

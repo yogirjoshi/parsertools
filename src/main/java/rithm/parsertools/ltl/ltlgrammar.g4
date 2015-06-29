@@ -24,7 +24,7 @@ unaryNonTemporal : NOTNODE;
 binaryNonTemporal: ANDNODE | ORNODE | IFFNODE| IFNODE;
 binaryTemporal: UNTILNODE;
 unaryTemporal: EVENTUALLYNODE | GLOBALLYNODE;
-PREDNAME: [a-z_0-9]+;
+PREDNAME: [A-Za-z_0-9]+;
 ANDNODE: '&&';
 ORNODE: '||';
 IFFNODE: '<->';

@@ -1,7 +1,7 @@
 // Generated from ltlgrammar.g4 by ANTLR 4.2
 
-package rithm.parsertools.ltl;
-import java.util.HashMap;
+	package rithm.parsertools.ltl;
+	import java.util.HashMap;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;

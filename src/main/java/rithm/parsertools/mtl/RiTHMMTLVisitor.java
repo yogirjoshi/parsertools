@@ -18,7 +18,7 @@ import rithm.core.RiTHMPredicate;
 import rithm.core.RiTHMProgStateCollection;
 import rithm.core.RiTHMTruthValue;
 import rithm.defaultcore.DefaultRiTHMTimedTruthValue;
-import rithm.defaultcore.DefaultRiTHMTruthValue;
+
 //import rithm.mtl.MTLMonitor;
 import rithm.parsertools.mtl.MTLParserParser.BinaryNonTemporalContext;
 import rithm.parsertools.mtl.MTLParserParser.BinaryTemporalContext;
@@ -47,9 +47,9 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		arePredicatesEvaluated=false;
 		allPredValues = new ArrayList<PredicateState>();
 	}
-	public RiTHMTruthValue getTruthValuation(String nodeName)
+	public RiTHMTruthValue getTruthValuation(String nodeName, int i)
 	{
-		return evalStatus.get(nodeName).get(0);
+		return evalStatus.get(nodeName).get(i);
 	}
 	public void setPredicateEvaluator(PredicateEvaluator pe)
 	{
@@ -121,6 +121,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 			{
 				rtVal = new DefaultRiTHMTimedTruthValue(Boolean.toString(Boolean.parseBoolean(operandEval1.get(i).getTruthValueDescription()) ||
 						Boolean.parseBoolean(operandEval2.get(i).getTruthValueDescription())));
+				rtVal.setTimetamp(operandEval1.get(i).getTimetamp());
 				binaryNonTemporalEval.add(i, rtVal);
 			}
 		}
@@ -131,6 +132,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 			{
 				rtVal = new DefaultRiTHMTimedTruthValue(Boolean.toString(Boolean.parseBoolean(operandEval1.get(i).getTruthValueDescription()) &&
 						Boolean.parseBoolean(operandEval2.get(i).getTruthValueDescription())));
+				rtVal.setTimetamp(operandEval1.get(i).getTimetamp());
 				binaryNonTemporalEval.add(i, rtVal);
 			}
 		}
@@ -141,6 +143,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 			{
 				rtVal = new DefaultRiTHMTimedTruthValue(Boolean.toString(!Boolean.parseBoolean(operandEval1.get(i).getTruthValueDescription()) ||
 						Boolean.parseBoolean(operandEval2.get(i).getTruthValueDescription())));
+				rtVal.setTimetamp(operandEval1.get(i).getTimetamp());
 				binaryNonTemporalEval.add(i, rtVal);
 			}
 		}
@@ -152,6 +155,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 				rtVal = new DefaultRiTHMTimedTruthValue(Boolean.toString((!Boolean.parseBoolean(operandEval1.get(i).getTruthValueDescription()) ||
 						Boolean.parseBoolean(operandEval2.get(i).getTruthValueDescription())) && (Boolean.parseBoolean(operandEval1.get(i).getTruthValueDescription()) ||
 						!Boolean.parseBoolean(operandEval2.get(i).getTruthValueDescription()))));
+				rtVal.setTimetamp(operandEval1.get(i).getTimetamp());
 				binaryNonTemporalEval.add(i, rtVal);
 			}
 		}
@@ -493,11 +497,11 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 	protected final RiTHMTruthValue evalNot(RiTHMTruthValue tval)
 	{
 		if(tval.getTruthValueDescription().equals("?"))
-			return new DefaultRiTHMTruthValue("?");
+			return new DefaultRiTHMTimedTruthValue("?", tval.getTimetamp());
 		if(Boolean.getBoolean(tval.getTruthValueDescription()))
-			return new DefaultRiTHMTruthValue("false");
+			return new DefaultRiTHMTimedTruthValue("false", tval.getTimetamp());
 		else
-			return new DefaultRiTHMTruthValue("true");
+			return new DefaultRiTHMTimedTruthValue("true", tval.getTimetamp());
 	}
 	@Override
 	public String visitPred(PredContext ctx) {
@@ -521,7 +525,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 //		for(int i =0; i < ctx.getChildCount();i++)
 //			visit(ctx.getChild(i));
 //		System.out.println("returning " + ctx.NUM(0).toString() + "," + ctx.NUM(1).toString());
-		return ctx.NUM(0).toString() + "," + ctx.NUM(1).toString();
+		return ctx.NUM().toString();
 //		System.out.println(ctx.getPayload().toString());
 //		return null;
 	}

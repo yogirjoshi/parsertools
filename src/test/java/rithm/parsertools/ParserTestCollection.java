@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import rithm.core.RiTHMPredicate;
 import rithm.defaultcore.DefaultRiTHMSpecification;
+import rithm.parsertools.ltl.LTLParser;
 import rithm.parsertools.mtl.MTLParser;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -37,10 +38,16 @@ public class ParserTestCollection
     /**
      * Rigourous Test :-)
      */
+    public void testLTL1()
+    {
+    	LTLParser ltlParser = new LTLParser("LTL");
+    	assertTrue(ltlParser.appendSpec(new DefaultRiTHMSpecification("<>B0")));
+    }
     public void testMTL1()
     {
     	MTLParser mtlParser = new MTLParser("MTL");
     	assertTrue(mtlParser.appendSpec(new DefaultRiTHMSpecification("<>{1,2}b")));
+    	assertTrue(mtlParser.appendSpec(new DefaultRiTHMSpecification("20-><>{0,0.5}20")));
     	assertTrue(mtlParser.appendSpec(new DefaultRiTHMSpecification("aU{1,2}b")));
     	assertFalse(mtlParser.appendSpec(new DefaultRiTHMSpecification("aU1,2}b")));
     	ArrayList<String> res;
