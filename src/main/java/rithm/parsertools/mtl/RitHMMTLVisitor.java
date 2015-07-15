@@ -14,9 +14,9 @@ import org.apache.log4j.Logger;
 import rithm.core.PredicateEvaluator;
 import rithm.core.PredicateState;
 import rithm.core.ProgState;
-import rithm.core.RiTHMPredicate;
-import rithm.core.RiTHMProgStateCollection;
-import rithm.core.RiTHMTruthValue;
+import rithm.core.RitHMPredicate;
+import rithm.core.RitHMProgStateCollection;
+import rithm.core.RitHMTruthValue;
 import rithm.defaultcore.DefaultRiTHMTimedTruthValue;
 
 //import rithm.mtl.MTLMonitor;
@@ -28,33 +28,69 @@ import rithm.parsertools.mtl.MTLParserParser.MtlContext;
 import rithm.parsertools.mtl.MTLParserParser.PredContext;
 import rithm.parsertools.mtl.MTLParserParser.UnaryNonTemporalContext;
 import rithm.parsertools.mtl.MTLParserParser.UnaryTemporalContext;
-import rithm.core.RiTHMLogMessages;
-public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
+import rithm.core.RitHMLogMessages;
+public class RitHMMTLVisitor extends MTLParserBaseVisitor<String>{
 
+	/**
+	 * 
+	 */
 	protected int idCount;
-	protected HashMap<String, ArrayList<RiTHMTruthValue>> evalStatus;
-	protected RiTHMProgStateCollection progStateCollection;
+	/**
+	 * 
+	 */
+	protected HashMap<String, ArrayList<RitHMTruthValue>> evalStatus;
+	/**
+	 * 
+	 */
+	protected RitHMProgStateCollection progStateCollection;
+	/**
+	 * 
+	 */
 	protected ArrayList<PredicateState> allPredValues;
+	/**
+	 * 
+	 */
 	protected PredicateEvaluator pe;
+	/**
+	 * 
+	 */
 	protected boolean arePredicatesEvaluated;
-	final static Logger logger = Logger.getLogger(RiTHMMTLVisitor.class);
-	public RiTHMMTLVisitor(RiTHMProgStateCollection progStateCollection)
+	/**
+	 * 
+	 */
+	final static Logger logger = Logger.getLogger(RitHMMTLVisitor.class);
+	/**
+	 * @param progStateCollection
+	 */
+	public RitHMMTLVisitor(RitHMProgStateCollection progStateCollection)
 	{
 		super();
-		this.evalStatus = new HashMap<String, ArrayList<RiTHMTruthValue>>();
+		this.evalStatus = new HashMap<String, ArrayList<RitHMTruthValue>>();
 		this.progStateCollection = progStateCollection;
 		idCount=0;
 		arePredicatesEvaluated=false;
 		allPredValues = new ArrayList<PredicateState>();
 	}
-	public RiTHMTruthValue getTruthValuation(String nodeName, int i)
+	/**Finds truth-value (at an index) of intermediate operand of the parse-tree
+	 * @param nodeName Name of the intermediate operand
+	 * @param i the event number
+	 * @return RiTHMTruthValue of the intermediate operand denoted by nodeName for event i
+	 * @see RitHMTruthValue
+	 */
+	public RitHMTruthValue getTruthValuation(String nodeName, int i)
 	{
 		return evalStatus.get(nodeName).get(i);
 	}
+	/**
+	 * @param pe
+	 */
 	public void setPredicateEvaluator(PredicateEvaluator pe)
 	{
 		this.pe = pe;
 	}
+	/* (non-Javadoc)
+	 * @see rithm.parsertools.mtl.MTLParserBaseVisitor#visitUnaryNonTemporal(rithm.parsertools.mtl.MTLParserParser.UnaryNonTemporalContext)
+	 */
 	@Override
 	public String visitUnaryNonTemporal(UnaryNonTemporalContext ctx) {
 		// TODO Auto-generated method stub
@@ -63,6 +99,9 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see rithm.parsertools.mtl.MTLParserBaseVisitor#visitUnaryTemporal(rithm.parsertools.mtl.MTLParserParser.UnaryTemporalContext)
+	 */
 	@Override
 	public String visitUnaryTemporal(UnaryTemporalContext ctx) {
 		// TODO Auto-generated method stub
@@ -71,10 +110,14 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		return null;
 	}
 	
+	/**
+	 * @param predName
+	 * @return
+	 */
 	private String evalPredicate(String predName)
 	{
-		logger.info(RiTHMLogMessages.RITHM_PROCESS + predName);
-		ArrayList<RiTHMTruthValue> predEval = new ArrayList<RiTHMTruthValue>();
+		logger.info(RitHMLogMessages.RITHM_PROCESS + predName);
+		ArrayList<RitHMTruthValue> predEval = new ArrayList<RitHMTruthValue>();
 		if(!arePredicatesEvaluated)
 		{
 			Iterator<ProgState> itProgState= progStateCollection.iterator();
@@ -83,7 +126,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 				pe.SetProgStateObj(itProgState.next());
 				PredicateState predState = pe.evaluatePredicates();
 				allPredValues.add(predState);
-				RiTHMTruthValue rtVal= new DefaultRiTHMTimedTruthValue(Boolean.toString(predState.getValue(predName)));
+				RitHMTruthValue rtVal= new DefaultRiTHMTimedTruthValue(Boolean.toString(predState.getValue(predName)));
 				rtVal.setTimetamp(predState.getTimestamp());
 				predEval.add(rtVal);
 //				System.out.println(rtVal);
@@ -93,7 +136,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		{
 			for(int i = 0; i < allPredValues.size();i++)
 			{
-				RiTHMTruthValue rtVal= new DefaultRiTHMTimedTruthValue(Boolean.toString(allPredValues.get(i).getValue(predName)));
+				RitHMTruthValue rtVal= new DefaultRiTHMTimedTruthValue(Boolean.toString(allPredValues.get(i).getValue(predName)));
 				rtVal.setTimetamp(allPredValues.get(i).getTimestamp());
 				predEval.add(rtVal);
 //				System.out.println(rtVal);
@@ -102,6 +145,12 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		evalStatus.put(predName, predEval);
 		return predName;
 	}
+	/**
+	 * @param ctxBase
+	 * @param previousName1
+	 * @param previousName2
+	 * @return
+	 */
 	private String evalBinaryNonTemporal(ParserRuleContext ctxBase, String previousName1, String previousName2)
 	{
 		String opName="";
@@ -110,10 +159,10 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 			ctx = (MtlContext) ctxBase;
 		idCount++;
 
-		ArrayList<RiTHMTruthValue> binaryNonTemporalEval = new ArrayList<RiTHMTruthValue>();
-		ArrayList<RiTHMTruthValue> operandEval1 = evalStatus.get(previousName1);
-		ArrayList<RiTHMTruthValue> operandEval2 = evalStatus.get(previousName2);
-		RiTHMTruthValue rtVal;
+		ArrayList<RitHMTruthValue> binaryNonTemporalEval = new ArrayList<RitHMTruthValue>();
+		ArrayList<RitHMTruthValue> operandEval1 = evalStatus.get(previousName1);
+		ArrayList<RitHMTruthValue> operandEval2 = evalStatus.get(previousName2);
+		RitHMTruthValue rtVal;
 		if(ctx.binaryNonTemporal().ORNODE() != null)
 		{
 			opName = "or";
@@ -160,10 +209,16 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 			}
 		}
 		evalStatus.put(Integer.toString(idCount), binaryNonTemporalEval);
-		logger.info(RiTHMLogMessages.RITHM_PROCESS + previousName1 + " " + previousName2 + " for "
+		logger.info(RitHMLogMessages.RITHM_PROCESS + previousName1 + " " + previousName2 + " for "
 				+ opName + ", Result into " +  Integer.toString(idCount));
 		return Integer.toString(idCount);
 	}
+	/**
+	 * @param ctxBase
+	 * @param previousName1
+	 * @param previousName2
+	 * @return
+	 */
 	private String evalBinaryTemporal(ParserRuleContext ctxBase, String previousName1, String previousName2)
 	{
 		MtlContext ctx = null;
@@ -171,9 +226,9 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 			ctx = (MtlContext) ctxBase;
 		idCount++;
 		String opName ="";
-		ArrayList<RiTHMTruthValue> binaryTemporalEval = new ArrayList<RiTHMTruthValue>();
-		ArrayList<RiTHMTruthValue> operandEval1 = evalStatus.get(previousName1);
-		ArrayList<RiTHMTruthValue> operandEval2 = evalStatus.get(previousName2);
+		ArrayList<RitHMTruthValue> binaryTemporalEval = new ArrayList<RitHMTruthValue>();
+		ArrayList<RitHMTruthValue> operandEval1 = evalStatus.get(previousName1);
+		ArrayList<RitHMTruthValue> operandEval2 = evalStatus.get(previousName2);
 		
 		String intervalString = visit(ctx.binaryTemporal().intervalNode().interval());
 		String[] intervalParts = intervalString.split(",");
@@ -191,7 +246,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 				Double startTS = begInterval + operandEval1.get(i).getTimetamp();
 				Double endTS = endInterval + operandEval1.get(i).getTimetamp();
 				int j = i, k = i;
-				RiTHMTruthValue found = new DefaultRiTHMTimedTruthValue("?");
+				RitHMTruthValue found = new DefaultRiTHMTimedTruthValue("?");
 				while(j < operandEval2.size())
 				{
 					if(operandEval2.get(j).getTimetamp() <= endTS)
@@ -209,7 +264,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 						break;
 					j++; k++;
 				}
-				RiTHMTruthValue rtVal = null;
+				RitHMTruthValue rtVal = null;
 				if(found.getTruthValueDescription().equals("true"))
 				{
 					rtVal= new DefaultRiTHMTimedTruthValue("true");
@@ -232,7 +287,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 				Double startTS = begInterval - operandEval1.get(i).getTimetamp();
 				Double endTS = endInterval - operandEval1.get(i).getTimetamp();
 				int j = i, k = i;
-				RiTHMTruthValue found = new DefaultRiTHMTimedTruthValue("?");
+				RitHMTruthValue found = new DefaultRiTHMTimedTruthValue("?");
 				while(j >= 0)
 				{
 					if(operandEval2.get(j).getTimetamp() >= endTS  ){
@@ -248,7 +303,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 					}
 					j--;k--;
 				}
-				RiTHMTruthValue rtVal = null;
+				RitHMTruthValue rtVal = null;
 				if(found.getTruthValueDescription().equals("true"))
 				{
 					rtVal= new DefaultRiTHMTimedTruthValue("true");
@@ -262,11 +317,16 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 			}
 		}
 		evalStatus.put(Integer.toString(idCount), binaryTemporalEval);
-		logger.info(RiTHMLogMessages.RITHM_PROCESS + previousName1 + " " + previousName2 + " for "
+		logger.info(RitHMLogMessages.RITHM_PROCESS + previousName1 + " " + previousName2 + " for "
 				+ opName + "{" + begInterval + "," + endInterval + "}, Result into " +  
 				Integer.toString(idCount));
 		return Integer.toString(idCount);
 	}
+	/**
+	 * @param ctxBase
+	 * @param previousName
+	 * @return
+	 */
 	private String evalUnaryTemporal(ParserRuleContext ctxBase, String previousName)
 	{
 		String opname="";
@@ -274,8 +334,8 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		if(ctxBase instanceof MtlContext)
 			ctx = (MtlContext) ctxBase;
 		idCount++;
-		ArrayList<RiTHMTruthValue> unaryTemporalEval = new ArrayList<RiTHMTruthValue>();
-		ArrayList<RiTHMTruthValue> operandEval = evalStatus.get(previousName);
+		ArrayList<RitHMTruthValue> unaryTemporalEval = new ArrayList<RitHMTruthValue>();
+		ArrayList<RitHMTruthValue> operandEval = evalStatus.get(previousName);
 		
 		String intervalString = visit(ctx.unaryTemporal().intervalNode().interval());
 		String[] intervalParts = intervalString.split(",");
@@ -302,7 +362,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 					}
 					j++;
 				}
-				RiTHMTruthValue rtVal = null;
+				RitHMTruthValue rtVal = null;
 				if(found == true)
 				{
 					rtVal= new DefaultRiTHMTimedTruthValue("true");
@@ -324,7 +384,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 				Double startTS = begInterval + operandEval.get(i).getTimetamp();
 				Double endTS = endInterval + operandEval.get(i).getTimetamp();
 				int j = i;
-				RiTHMTruthValue found = new DefaultRiTHMTimedTruthValue("?");;
+				RitHMTruthValue found = new DefaultRiTHMTimedTruthValue("?");;
 				while(j < operandEval.size())
 				{
 //					if(operandEval.get(j).getTruthValueDescription().equals("?") 
@@ -344,7 +404,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 					j++;
 
 				}
-				RiTHMTruthValue rtVal = null;
+				RitHMTruthValue rtVal = null;
 				if(found.getTruthValueDescription().equals("?"))
 				{
 					rtVal= new DefaultRiTHMTimedTruthValue("true");
@@ -382,7 +442,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 					}
 					j--;
 				}
-				RiTHMTruthValue rtVal = null;
+				RitHMTruthValue rtVal = null;
 				if(found == true)
 				{
 					rtVal= new DefaultRiTHMTimedTruthValue("true");
@@ -407,7 +467,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 				Double startTS =  operandEval.get(i).getTimetamp() - begInterval;
 				Double endTS = operandEval.get(i).getTimetamp() - endInterval;
 				int j = i;
-				RiTHMTruthValue found = new DefaultRiTHMTimedTruthValue("?");;
+				RitHMTruthValue found = new DefaultRiTHMTimedTruthValue("?");;
 				while(j >= 0)
 				{
 //					if(operandEval.get(j).getTruthValueDescription().equals("?") 
@@ -427,7 +487,7 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 					}
 					j--;
 				}
-				RiTHMTruthValue rtVal = null;
+				RitHMTruthValue rtVal = null;
 				if(found.getTruthValueDescription().equals("?"))
 				{
 					rtVal= new DefaultRiTHMTimedTruthValue("true");
@@ -444,25 +504,32 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 				unaryTemporalEval.add(rtVal);
 			}
 		}
-		logger.info(RiTHMLogMessages.RITHM_PROCESS + previousName + " for "
+		logger.info(RitHMLogMessages.RITHM_PROCESS + previousName + " for "
 				+ opname + "{" + begInterval + "," + endInterval + "}, Result into " +  
 				Integer.toString(idCount));
 		evalStatus.put(Integer.toString(idCount), unaryTemporalEval);
 		return Integer.toString(idCount);
 	}
+	/**
+	 * @param previousName
+	 * @return
+	 */
 	private String evalNotContext(String previousName)
 	{
 		idCount++;
-		ArrayList<RiTHMTruthValue> unaryNonTemporalEval = new ArrayList<RiTHMTruthValue>();
-		ArrayList<RiTHMTruthValue> operandEval = evalStatus.get(previousName);
+		ArrayList<RitHMTruthValue> unaryNonTemporalEval = new ArrayList<RitHMTruthValue>();
+		ArrayList<RitHMTruthValue> operandEval = evalStatus.get(previousName);
 		for(int i = 0; i < operandEval.size();i++)
 			unaryNonTemporalEval.add(evalNot(operandEval.get(i)));
 		evalStatus.put(Integer.toString(idCount), unaryNonTemporalEval);
-		logger.info(RiTHMLogMessages.RITHM_PROCESS + previousName + " for "
+		logger.info(RitHMLogMessages.RITHM_PROCESS + previousName + " for "
 				+ "not" + ", Result into " +  
 				Integer.toString(idCount));
 		return Integer.toString(idCount);
 	}
+	/* (non-Javadoc)
+	 * @see rithm.parsertools.mtl.MTLParserBaseVisitor#visitMtl(rithm.parsertools.mtl.MTLParserParser.MtlContext)
+	 */
 	@Override
 	public String visitMtl(MtlContext ctx) {
 
@@ -494,7 +561,11 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		}
 		return visitMtl(ctx.mtl(0));
 	}
-	protected final RiTHMTruthValue evalNot(RiTHMTruthValue tval)
+	/**
+	 * @param tval
+	 * @return
+	 */
+	protected final RitHMTruthValue evalNot(RitHMTruthValue tval)
 	{
 		if(tval.getTruthValueDescription().equals("?"))
 			return new DefaultRiTHMTimedTruthValue("?", tval.getTimetamp());
@@ -503,6 +574,9 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		else
 			return new DefaultRiTHMTimedTruthValue("true", tval.getTimetamp());
 	}
+	/* (non-Javadoc)
+	 * @see rithm.parsertools.mtl.MTLParserBaseVisitor#visitPred(rithm.parsertools.mtl.MTLParserParser.PredContext)
+	 */
 	@Override
 	public String visitPred(PredContext ctx) {
 		// TODO Auto-generated method stub
@@ -510,6 +584,9 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see rithm.parsertools.mtl.MTLParserBaseVisitor#visitBinaryTemporal(rithm.parsertools.mtl.MTLParserParser.BinaryTemporalContext)
+	 */
 	@Override
 	public String visitBinaryTemporal(BinaryTemporalContext ctx) {
 		// TODO Auto-generated method stub
@@ -519,6 +596,9 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see rithm.parsertools.mtl.MTLParserBaseVisitor#visitInterval(rithm.parsertools.mtl.MTLParserParser.IntervalContext)
+	 */
 	@Override
 	public String visitInterval(IntervalContext ctx) {
 		// TODO Auto-generated method stub
@@ -530,6 +610,9 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 //		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see rithm.parsertools.mtl.MTLParserBaseVisitor#visitIntervalNode(rithm.parsertools.mtl.MTLParserParser.IntervalNodeContext)
+	 */
 	@Override
 	public String visitIntervalNode(IntervalNodeContext ctx) {
 		// TODO Auto-generated method stub
@@ -539,6 +622,9 @@ public class RiTHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see rithm.parsertools.mtl.MTLParserBaseVisitor#visitBinaryNonTemporal(rithm.parsertools.mtl.MTLParserParser.BinaryNonTemporalContext)
+	 */
 	@Override
 	public String visitBinaryNonTemporal(BinaryNonTemporalContext ctx) {
 		// TODO Auto-generated method stub

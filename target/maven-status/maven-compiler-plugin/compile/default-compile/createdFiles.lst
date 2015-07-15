@@ -12,7 +12,6 @@ rithm/parsertools/mtl/MTLParser$Mode.class
 rithm/parsertools/ltl/verboseltlgrammarParser$LtlContext.class
 rithm/parsertools/mtl/MTLParser$RiTHMMTLgrammarListener.class
 rithm/parsertools/ltl/ltlgrammarBaseListener.class
-rithm/parsertools/mtl/RiTHMMTLVisitor.class
 rithm/parsertools/ltl/ltlgrammarParser$BinaryTemporalContext.class
 rithm/parsertools/ltl/verboseltlgrammarParser$BinaryTemporalContext.class
 rithm/parsertools/ltl/verboseltlgrammarLexer.class
@@ -24,6 +23,7 @@ rithm/parsertools/ltl/ltlgrammarBaseVisitor.class
 rithm/parsertools/ltl/VerboseLTLParser.class
 rithm/parsertools/mtl/Driver.class
 rithm/parsertools/ltl/ltlErrorListener.class
+rithm/parsertools/mtl/RitHMMTLVisitor.class
 rithm/parsertools/ltl/LTLParser.class
 rithm/parsertools/mtl/MTLParserParser$BinaryTemporalContext.class
 rithm/parsertools/ltl/verboseltlErrorListener.class

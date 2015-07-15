@@ -3,7 +3,7 @@ package rithm.parsertools;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import rithm.core.RiTHMPredicate;
+import rithm.core.RitHMPredicate;
 import rithm.defaultcore.DefaultRiTHMSpecification;
 import rithm.parsertools.ltl.LTLParser;
 import rithm.parsertools.mtl.MTLParser;
@@ -53,7 +53,7 @@ public class ParserTestCollection
     	ArrayList<String> res;
     	res = mtlParser.getPredsForSpec("<>{1,2}b");
     	assertTrue(res.contains("b"));
-    	ArrayList<RiTHMPredicate> preds = mtlParser.getPredicates();
+    	ArrayList<RitHMPredicate> preds = mtlParser.getPredicates();
     	mtlParser.removeSpec(new DefaultRiTHMSpecification("<>{1,2}b"));
     	assertTrue(mtlParser.getPredsForSpec("<>{1,2}b")==null);
     }

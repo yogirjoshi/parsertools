@@ -99,18 +99,18 @@ public class VerboseLTLParser extends ParserPlugin{
      * @see #getPredicates()
      */
 	private HashMap<String, ArrayList<String>> predsForSpec;
-	private ArrayList<RiTHMPredicate> PredicateList;
+	private ArrayList<RitHMPredicate> PredicateList;
 	/**
      * A Map used to maintain the references between specifications and predicates
      * @see #getPredicates()
      */
-	private HashMap<RiTHMPredicate, Integer> PredCount;
+	private HashMap<RitHMPredicate, Integer> PredCount;
 	
 	/**
      * A Map used to maintain the references between specifications and predicates
      * @see #getSpecs()
      */
-	private RiTHMSpecificationCollection SpecList;
+	private RitHMSpecificationCollection SpecList;
 	
 	/**
      * A Map used to maitain the references between specifications and predicates
@@ -119,7 +119,7 @@ public class VerboseLTLParser extends ParserPlugin{
 	private ArrayList<Boolean> SpecValidationList;
 	private verboseltlgrammarLexer lexer;
 	private verboseltlgrammarParser parser;
-	private HashMap<RiTHMSpecification, String> ErrorMessages;
+	private HashMap<RitHMSpecification, String> ErrorMessages;
 	public enum Mode
 	{
 		insert,
@@ -130,9 +130,9 @@ public class VerboseLTLParser extends ParserPlugin{
 		SpecLang = Lang;
 		SpecList  = new DefaultRiTHMSpecificationCollection();
 		SpecValidationList = new ArrayList<Boolean>();
-		PredicateList = new ArrayList<RiTHMPredicate>();
-		PredCount = new HashMap<RiTHMPredicate, Integer>();
-		ErrorMessages = new HashMap<RiTHMSpecification, String>();
+		PredicateList = new ArrayList<RitHMPredicate>();
+		PredCount = new HashMap<RitHMPredicate, Integer>();
+		ErrorMessages = new HashMap<RitHMSpecification, String>();
 		predsForSpec = new HashMap<String, ArrayList<String>>();
 	}
 	class RiTHMltlgrammarListener extends verboseltlgrammarBaseListener
@@ -152,7 +152,7 @@ public class VerboseLTLParser extends ParserPlugin{
 //			System.out.println(PredCount.get(ctx.PREDNAME().toString()));
 			switch (mode) {
 			case 1:
-				RiTHMPredicate rp = new DefaultRiTHMPredicate(ctx.PREDNAME().toString());
+				RitHMPredicate rp = new DefaultRiTHMPredicate(ctx.PREDNAME().toString());
 				if(!PredicateList.contains(rp))
 				{
 					PredicateList.add(rp);
@@ -171,13 +171,13 @@ public class VerboseLTLParser extends ParserPlugin{
 					predsForSpec.get(spec).add(ctx.PREDNAME().toString());
 				break;
 			case 2:
-				RiTHMPredicate rp1 = new DefaultRiTHMPredicate(ctx.PREDNAME().toString());
+				RitHMPredicate rp1 = new DefaultRiTHMPredicate(ctx.PREDNAME().toString());
 				if(PredCount.get(rp1) <= 1)
 				{
 					PredCount.remove(rp1);
 					PredicateList.remove(rp1);
 //					System.out.println("deleted from PredicateList" + ctx.PREDNAME().toString());
-					for (RiTHMPredicate each_pred: PredicateList)
+					for (RitHMPredicate each_pred: PredicateList)
 						System.out.println(each_pred.getTextDescription());
 				}
 				else
@@ -202,7 +202,7 @@ public class VerboseLTLParser extends ParserPlugin{
 	}
 	
 	@Override
-	public boolean removeSpec(RiTHMSpecification Spec) {
+	public boolean removeSpec(RitHMSpecification Spec) {
 		// TODO Auto-generated method stub
 		validate_spec(Spec,2);
 		SpecList.remove(Spec);
@@ -225,7 +225,7 @@ public class VerboseLTLParser extends ParserPlugin{
 
 			while((line = br.readLine())!= null)
 			{
-				RiTHMSpecification rs = new DefaultRiTHMSpecification(line);
+				RitHMSpecification rs = new DefaultRiTHMSpecification(line);
 				SpecList.add(rs);
 			}
 			br.close();
@@ -239,9 +239,9 @@ public class VerboseLTLParser extends ParserPlugin{
 	}
 
 	@Override
-	public boolean loadSpecs(RiTHMSpecificationCollection Specs) {
+	public boolean loadSpecs(RitHMSpecificationCollection Specs) {
 		// TODO Auto-generated method stub
-		for(RiTHMSpecification spec: Specs)
+		for(RitHMSpecification spec: Specs)
 			this.SpecList.add(spec);
 		validateSpecs();
 		return false;
@@ -264,7 +264,7 @@ public class VerboseLTLParser extends ParserPlugin{
 	}
 
 	@Override
-	public boolean appendSpec(RiTHMSpecification Spec) {
+	public boolean appendSpec(RitHMSpecification Spec) {
 		// TODO Auto-generated method stub
 
 		if(validate_spec(Spec,1))
@@ -276,7 +276,7 @@ public class VerboseLTLParser extends ParserPlugin{
 			return false;
 		return true;
 	}
-	private boolean validate_spec(RiTHMSpecification Spec, int mode)
+	private boolean validate_spec(RitHMSpecification Spec, int mode)
 	{
 		lexer = new verboseltlgrammarLexer(new ANTLRInputStream(Spec.getTextDescription()));
 		lexer.removeErrorListeners();
@@ -314,29 +314,29 @@ public class VerboseLTLParser extends ParserPlugin{
 	}
 
 	@Override
-	public boolean exportSpecs(RiTHMSpecificationCollection args) {
+	public boolean exportSpecs(RitHMSpecificationCollection args) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean rewriteSpecs(RiTHMSpecificationCollection args) {
+	public boolean rewriteSpecs(RitHMSpecificationCollection args) {
 		// TODO Auto-generated method stub
 
 		return true;
 	}
 	@Override
-	public RiTHMSpecificationCollection getSpecs()
+	public RitHMSpecificationCollection getSpecs()
 	{
 		return SpecList;
 	}
 	@Override
-	public ArrayList<RiTHMPredicate> getPredicates()
+	public ArrayList<RitHMPredicate> getPredicates()
 	{
 		return PredicateList;
 	}
 	@Override
-	public HashMap<RiTHMSpecification, String> getErrorMessages() {
+	public HashMap<RitHMSpecification, String> getErrorMessages() {
 		// TODO Auto-generated method stub
 		return ErrorMessages;
 	}
@@ -344,7 +344,7 @@ public class VerboseLTLParser extends ParserPlugin{
 	{
 		ErrorMessages.clear();
 	}
-	public String getErrorforSpec(RiTHMSpecification Spec)
+	public String getErrorforSpec(RitHMSpecification Spec)
 	{
 		if(ErrorMessages.containsKey(Spec))
 			return ErrorMessages.get(Spec);
@@ -355,7 +355,7 @@ public class VerboseLTLParser extends ParserPlugin{
 	@Override
 	public boolean removeAllSpecs() {
 		// TODO Auto-generated method stub
-		for(RiTHMSpecification each_spec: SpecList)
+		for(RitHMSpecification each_spec: SpecList)
 			validate_spec(each_spec, 2);
 		SpecList.clear();
 		return false;
@@ -368,7 +368,7 @@ public class VerboseLTLParser extends ParserPlugin{
 	}
 
 	@Override
-	public String rewriteSpec(RiTHMSpecification spec) {
+	public String rewriteSpec(RitHMSpecification spec) {
 		// TODO Auto-generated method stub
 		String rewrittenSpec = spec.getTextDescription();
 		rewrittenSpec = rewrittenSpec.replaceAll(" AND ", "&&");
@@ -383,7 +383,7 @@ public class VerboseLTLParser extends ParserPlugin{
 	}
 
 	@Override
-	public ParseTree getTreeforSpec(RiTHMSpecification spec) {
+	public ParseTree getTreeforSpec(RitHMSpecification spec) {
 		// TODO Auto-generated method stub
 		return null;
 	}

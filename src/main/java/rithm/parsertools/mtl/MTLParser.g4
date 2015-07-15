@@ -14,9 +14,9 @@ options {
 mtl: pred 
 	| '(' mtl ')' 
 	| unaryNonTemporal mtl
+	| unaryTemporal mtl
 	| mtl binaryNonTemporal mtl
 	| mtl binaryTemporal mtl
-	| unaryTemporal mtl
 	| mtl WS;
 	
 pred: PREDNAME | 'T[RUE]' | 'F[ALSE]';
