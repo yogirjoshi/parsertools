@@ -3,7 +3,7 @@ options {
 
 }
 @header {
-	package rithm.parsertools;
+	package rithm.parsertools.ltl;
 	import java.util.HashMap;
 }
 @members 
@@ -14,23 +14,26 @@ options {
 ltl: pred 
 	| '(' ltl ')' 
 	| unaryNonTemporal ltl
+	| unaryTemporal ltl
 	| ltl binaryNonTemporal ltl
 	| ltl binaryTemporal ltl
-	| unaryTemporal ltl
 	| ltl WS;
 	
-pred: PREDNAME | 'T[RUE]' | 'F[ALSE]';
-unaryNonTemporal : NOTNODE;
-binaryNonTemporal: ANDNODE | ORNODE | IFFNODE| IFNODE;
-binaryTemporal: UNTILNODE;
-unaryTemporal: EVENTUALLYNODE | GLOBALLYNODE;
-PREDNAME: [A-Za-z_0-9]+;
+pred: PREDNAME | PREDNAME ES| 'T[RUE]' | 'F[ALSE]';
+unaryNonTemporal : NOTNODE | NOTNODE ES;
+unaryTemporal: EVENTUALLYNODE | EVENTUALLYNODE ES| GLOBALLYNODE | GLOBALLYNODE ES| NEXTNODE  | NEXTNODE ES;
+binaryNonTemporal: ANDNODE | ANDNODE ES| ORNODE | ORNODE ES| IFFNODE | IFFNODE ES| IFNODE | IFNODE ES;
+binaryTemporal: UNTILNODE | UNTILNODE ES;
+
+PREDNAME: [A-RTV-Za-z_0-9]+;
 ANDNODE: '&&';
 ORNODE: '||';
 IFFNODE: '<->';
 IFNODE: '->';
 UNTILNODE: 'U';
 EVENTUALLYNODE: '<>';
+NEXTNODE: 'X';
 GLOBALLYNODE: '[]';
 NOTNODE: '!';
+ES: [ ]+;
 WS : [ \t\r\n]+ -> skip ;

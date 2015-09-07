@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 import rithm.core.RitHMPredicate;
 import rithm.defaultcore.DefaultRiTHMSpecification;
+import rithm.parsertools.foltl.FOLTLParser;
 import rithm.parsertools.ltl.LTLParser;
 import rithm.parsertools.mtl.MTLParser;
+import rithm.parsertools.ptltl.*;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -42,6 +44,17 @@ public class ParserTestCollection
     {
     	LTLParser ltlParser = new LTLParser("LTL");
     	assertTrue(ltlParser.appendSpec(new DefaultRiTHMSpecification("<>B0")));
+    	ltlParser.appendSpec(new DefaultRiTHMSpecification("[](a-><>bUc)"));
+    	ltlParser.appendSpec(new DefaultRiTHMSpecification("[]((q&&! r&&<>r)->(p U r))"));
+    	ltlParser.appendSpec(new DefaultRiTHMSpecification("[]((q&&! r&&<>r)->(! s U r))"));
+    	System.out.println(ltlParser.getErrorforSpec(new DefaultRiTHMSpecification("[](a-><>bUc)")));
+    	System.out.println(ltlParser.getErrorforSpec(new DefaultRiTHMSpecification("[]((q&&! r&&<>r)->(p U r))")));
+    	System.out.println(ltlParser.getErrorforSpec(new DefaultRiTHMSpecification("[]((q&&! r&&<>r)->(! s U r))")));
+    }
+    public void testPTLTL1()
+    {
+    	PTLTLParser ltlParser = new PTLTLParser("PTLTL");
+    	assertTrue(ltlParser.appendSpec(new DefaultRiTHMSpecification("<*>B0")));
     }
     public void testMTL1()
     {
@@ -56,6 +69,29 @@ public class ParserTestCollection
     	ArrayList<RitHMPredicate> preds = mtlParser.getPredicates();
     	mtlParser.removeSpec(new DefaultRiTHMSpecification("<>{1,2}b"));
     	assertTrue(mtlParser.getPredsForSpec("<>{1,2}b")==null);
+    }
+    public void testPTLTL2()
+    {
+    	PTLTLParser ltlParser = new PTLTLParser("LTL");
+    	assertTrue(ltlParser.appendSpec(new DefaultRiTHMSpecification("aSb")));
+    	assertTrue(ltlParser.appendSpec(new DefaultRiTHMSpecification("[*](a->(!(X*b))&&b)")));
+    	ltlParser.appendSpec(new DefaultRiTHMSpecification("[*](aS<*>b)"));
+    	System.out.println(ltlParser.getErrorforSpec(new DefaultRiTHMSpecification("[*](aS(<*>b))")));
+ 
+    }
+    public void testFOLTL()
+    {
+    	FOLTLParser foltlParser = new FOLTLParser("FOLTL");
+//    	assertTrue(foltlParser.appendSpec(new DefaultRiTHMSpecification("FORALL(Y)")));
+    	foltlParser.appendSpec(new DefaultRiTHMSpecification("FORALL(YOBJ)[](a(YOBJ))"));
+//    	System.out.println(foltlParser.getErrorforSpec(new DefaultRiTHMSpecification("FORALL(Y)[](a(Y))")));
+    	assertTrue(foltlParser.appendSpec(new DefaultRiTHMSpecification("FORALL(T)EXISTS(Z)FORALL(Y)[](b(Z)->a(Y)Ub(T))")));
+    	System.out.println(foltlParser.getErrorforSpec(new DefaultRiTHMSpecification("FORALL(Z)FORALL(Y)[](a(Y)Ub(Y))")));
+//    	foltlParser.appendSpec(new DefaultRiTHMSpecification("[*](aS<*>b)"));
+//    	System.out.println(foltlParser.getErrorforSpec(new DefaultRiTHMSpecification("[*](aS(<*>b))")));
+    	for (String objID : foltlParser.getObjectIDs("FORALL(T)EXISTS(Z)FORALL(Y)[](b(Z)->a(Y)Ub(T))"))
+    		System.out.println(objID);
+    	System.out.println(foltlParser.rewriteSpec(new DefaultRiTHMSpecification("FORALL(T)EXISTS(Z)FORALL(Y)[](b(Z)->a(Y)Ub(T))")));
     }
     public void testApp()
     {

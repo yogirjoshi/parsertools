@@ -341,6 +341,7 @@ public class RitHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		String[] intervalParts = intervalString.split(",");
 		Double begInterval = Double.valueOf(intervalParts[0]);
 		Double endInterval = Double.valueOf(intervalParts[1]);
+		
 		if(ctx.unaryTemporal().EVENTUALLYNODE() != null)
 		{
 			opname="eventually";
@@ -424,6 +425,7 @@ public class RitHMMTLVisitor extends MTLParserBaseVisitor<String>{
 		if(ctx.unaryTemporal().EVENTUALLYPASTNODE() != null)
 		{
 			opname="eventually^-1";
+
 			for(int i = 0; i < operandEval.size();i++)
 			{
 				Double startTS =  operandEval.get(i).getTimetamp() - begInterval;
@@ -567,9 +569,9 @@ public class RitHMMTLVisitor extends MTLParserBaseVisitor<String>{
 	 */
 	protected final RitHMTruthValue evalNot(RitHMTruthValue tval)
 	{
-		if(tval.getTruthValueDescription().equals("?"))
-			return new DefaultRiTHMTimedTruthValue("?", tval.getTimetamp());
-		if(Boolean.getBoolean(tval.getTruthValueDescription()))
+//		if(tval.getTruthValueDescription().equals("?"))
+//			return new DefaultRiTHMTimedTruthValue("?", tval.getTimetamp());
+		if(Boolean.parseBoolean(tval.getTruthValueDescription()))
 			return new DefaultRiTHMTimedTruthValue("false", tval.getTimetamp());
 		else
 			return new DefaultRiTHMTimedTruthValue("true", tval.getTimetamp());

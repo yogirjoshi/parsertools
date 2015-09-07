@@ -317,16 +317,15 @@ public class LTLParser extends ParserPlugin{
 	@Override
 	public boolean exportSpecs(RitHMSpecificationCollection Specs) {
 		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException("Not supported yet");
 	}
 
 	@Override
 	public boolean rewriteSpecs(RitHMSpecificationCollection Specs) {
 		// TODO Auto-generated method stub
-
-		return true;
+		throw new UnsupportedOperationException("Not Required yet");
 	}
-
+	
 	@Override
 	public RitHMSpecificationCollection getSpecs()
 	{

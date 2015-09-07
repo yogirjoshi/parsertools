@@ -14,9 +14,10 @@ options {
 ltl: pred 
 	| '(' ltl ')' 
 	| unaryNonTemporal ltl
+		| unaryTemporal ltl
 	| ltl binaryNonTemporal ltl
 	| ltl binaryTemporal ltl
-	| unaryTemporal ltl
+
 	| ltl WS;
 	
 pred: PREDNAME | 'T[RUE]' | 'F[ALSE]';

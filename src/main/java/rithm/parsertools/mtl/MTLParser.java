@@ -388,5 +388,5 @@ public class MTLParser extends ParserPlugin{
 		// TODO Auto-generated method stub
 		return spec.getTextDescription();
 	}
-	
+
 }
